@@ -1,0 +1,15 @@
+{
+  "name": "jnye/aoc2023-php",
+  "description": "Advent of Code 2023 Solutions in PHP",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Joshua Nye",
+      "email": "joshua.nye@gmail.com"
+    }
+  ],
+  "require": {
+    "illuminate/collections": "^10.34"
+  }
+}
