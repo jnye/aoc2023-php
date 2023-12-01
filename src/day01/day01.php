@@ -28,23 +28,25 @@ function convertWordsToDigits(string $line): string
         'seven' => '7',
         'eight' => '8',
         'nine' => '9',
-        '1' => '1',
-        '2' => '2',
-        '3' => '3',
-        '4' => '4',
-        '5' => '5',
-        '6' => '6',
-        '7' => '7',
-        '8' => '8',
-        '9' => '9',
     ];
     $result = '';
     for ($i = 0; $i < strlen($line); $i++) {
         $substr = substr($line, $i);
+        $firstCharacter = $substr[0];
+        if (ctype_digit($firstCharacter)) {
+            $result .= $firstCharacter;
+            continue;
+        }
+        $foundWord = false;
         foreach ($map as $word => $number) {
             if (str_starts_with($substr, $word)) {
                 $result .= $number;
+                $foundWord = true;
+                break;
             }
+        }
+        if (!$foundWord) {
+            $result .= $firstCharacter;
         }
     }
     return $result;
