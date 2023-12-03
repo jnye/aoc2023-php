@@ -40,3 +40,33 @@ $answer1 = $lines->map(function ($line) {
 });
 
 print "Answer 1: $answer1\n";
+
+$answer2 = $lines->map(function ($line) {
+    if (!preg_match('/^Game (\d+):\s*(.*?)$/', $line, $matches)) {
+        return null;
+    }
+    $gameId = (int)$matches[1];
+    $reveals = (new Collection(preg_split('/;\s*/', $matches[2])))->map(function ($phrase) {
+        $red = $green = $blue = 0;
+        if (preg_match('/(\d+) red/', $phrase, $matches)) $red = (int)$matches[1];
+        if (preg_match('/(\d+) green/', $phrase, $matches)) $green = (int)$matches[1];
+        if (preg_match('/(\d+) blue/', $phrase, $matches)) $blue = (int)$matches[1];
+        return [$red, $green, $blue];
+    });
+    return [
+        'gameId' => $gameId,
+        'reveals' => $reveals,
+    ];
+})->map(function ($data) {
+    $min_red = 0;
+    $min_green = 0;
+    $min_blue = 0;
+    foreach ($data['reveals'] as $counts) {
+        if ($counts[0] > $min_red) $min_red = $counts[0];
+        if ($counts[1] > $min_green) $min_green = $counts[1];
+        if ($counts[2] > $min_blue) $min_blue = $counts[2];
+    }
+    return $min_red * $min_green * $min_blue;
+})->sum();
+
+print "Answer 2: $answer2\n";
